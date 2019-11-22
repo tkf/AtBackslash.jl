@@ -40,7 +40,6 @@ struct ObjectProxy
     dict::AbstractDict{Symbol}
 end
 
-Base.hasproperty(obj::ObjectProxy, name::Symbol) = haskey(getfield(obj, :dict), name)
 Base.getproperty(obj::ObjectProxy, name::Symbol) = getfield(obj, :dict)[name]
 
 @testset "NonNamedTuple" begin
