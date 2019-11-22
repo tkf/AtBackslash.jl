@@ -1,6 +1,7 @@
 module TestAtBackslash
 
-using AtBackslash: @\
+using AtBackslash: @\, AtBackslash
+using Documenter: doctest
 using Test: @test, @testset
 
 @testset "All bound" begin
@@ -124,6 +125,10 @@ end
             " `(; ...)`. Got: ",
         ) ⊏ sprint(showerror, err)
     end
+end
+
+@testset "doctest" begin
+    doctest(AtBackslash; manual=false)
 end
 
 end  # module
