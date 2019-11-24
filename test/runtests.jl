@@ -73,6 +73,11 @@ end
     @test identity |> @\(_(:(x = 1, y = 2))) == :(x = 1, y = 2)
 end
 
+@testset "Non-Symbol QuoteNode" begin
+    ex = :(@\(; x=$(QuoteNode(:(some(expr))))))
+    @test nothing |> @eval($ex) == (x = :(some(expr)),)
+end
+
 @testset "Explicit nonlocal" begin
     x = :nonlocal
     @test (x = 1, y = 2) |> @\(a = :x, b = x) == (a = 1, b = :nonlocal)
