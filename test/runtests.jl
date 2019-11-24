@@ -120,11 +120,7 @@ end
     @testset "@\\(; \$(f(x)))" begin
         ex = :(@\(; $(Expr(:$, :(f(x))))))
         err = @test_error @eval $ex
-        @test string(
-            "Only single-argument with a symbol \$x is",
-            " supported inside named tuple expression",
-            " `(; ...)`. Got: ",
-        ) ⊏ sprint(showerror, err)
+        @test "syntax: invalid named tuple element \"f(x)\"" ⊏ sprint(showerror, err)
     end
 
     @testset "@\\(; \$(x, y))" begin

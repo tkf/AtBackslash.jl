@@ -18,18 +18,6 @@ function is_interpolation(ex)
     return true
 end
 
-function is_interpolation_in_parameters(ex)
-    is_interpolation(ex) || return false
-    if !(ex.args[1] isa Symbol)
-        error(
-            "Only single-argument with a symbol \$x is supported inside named",
-            " tuple expression `(; ...)`. Got: ",
-            ex,
-        )
-    end
-    return true
-end
-
 """
     @\\(NCT1, NTC2, ..., NTCn) :: NamedTuple
     @\\(; NCT1, NTC2, ..., NTCn) :: NamedTuple
@@ -60,8 +48,6 @@ macro \(args...)
                     Expr(:(=), esc(x), replace_symbols(x))
                 elseif x isa QuoteNode && x.value isa Symbol
                     Expr(:(=), esc(x.value), replace_symbols(x))
-                elseif is_interpolation_in_parameters(x)
-                    Expr(:(=), esc(x.args[1]), esc(x.args[1]))
                 else
                     replace_symbols(x)
                 end
