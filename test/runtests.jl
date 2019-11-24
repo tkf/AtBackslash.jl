@@ -61,6 +61,14 @@ end
     @test (x = 1, y = 2) |> @\(z, :x) === (z = 3, x = 1)
 end
 
+@testset "macrocall" begin
+    z = 3
+    result = (x = 1, y = 2) |> @\(:x, z = @timed(z))
+    @test result.x === 1
+    @test result.z[1] === z
+    @test result.z[5].total_time isa Number
+end
+
 @testset "Explicit nonlocal" begin
     x = :nonlocal
     @test (x = 1, y = 2) |> @\(a = :x, b = x) == (a = 1, b = :nonlocal)

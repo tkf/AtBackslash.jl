@@ -59,7 +59,7 @@ macro \(args...)
         elseif isexpr(ex, :.)
             Expr(:., replace_symbols(ex.args[1]), ex.args[2:end]...)
         elseif isexpr(ex, :macrocall)
-            ex
+            esc(ex)
         else
             Expr(ex.head, replace_symbols.(ex.args)...)
         end
