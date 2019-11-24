@@ -69,6 +69,10 @@ end
     @test result.z[5].total_time isa Number
 end
 
+@testset "quote" begin
+    @test identity |> @\(_(:(x = 1, y = 2))) == :(x = 1, y = 2)
+end
+
 @testset "Explicit nonlocal" begin
     x = :nonlocal
     @test (x = 1, y = 2) |> @\(a = :x, b = x) == (a = 1, b = :nonlocal)
