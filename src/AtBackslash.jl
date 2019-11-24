@@ -12,7 +12,7 @@ using Base.Meta: isexpr
 
 function is_interpolation(ex)
     isexpr(ex, :$) || return false
-    if length(ex.args) != 1
+    if length(ex.args) != 1 || isexpr(ex.args[1], :tuple)
         error("Only single-argument \$ is supported. Got: ", ex)
     end
     return true
@@ -79,6 +79,7 @@ macro \(args...)
         end
 
     if args == (:_,)
+        # Should I?
         error("`@\\_` not supported. Use `identity`.")
     end
 

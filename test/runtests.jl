@@ -78,6 +78,8 @@ end
     @test (x = 1, y = 2) |> @\(identity(x)) == :nonlocal
     @test (x = 1, y = 2) |> @\(identity($:x)) == :x
     @test (x = 1, y = 2) |> @\($:x) == :x
+    @test (x = 1, y = 2) |>
+          @\(merge((; a = $:x), (; :x, y = x))) == (a = :x, x = 1, y = :nonlocal)
 end
 
 macro test_error(ex)
@@ -123,6 +125,24 @@ end
             " supported inside named tuple expression",
             " `(; ...)`. Got: ",
         ) ⊏ sprint(showerror, err)
+    end
+
+    @testset "@\\(; \$(x, y))" begin
+        ex = :(@\(; $(Expr(:$, :((x, y))))))
+        err = @test_error @eval $ex
+        @test "Only single-argument \$ is supported. Got: " ⊏ sprint(showerror, err)
+    end
+
+    @testset "@\\_" begin
+        ex = :(@\_)
+        err = @test_error @eval $ex
+        @test "`@\\_` not supported. Use `identity`." ⊏ sprint(showerror, err)
+    end
+
+    @testset "Unsupported expression" begin
+        ex = :(@\ import Base import Base)
+        err = @test_error @eval $ex
+        @test "Unsupported expression:" ⊏ sprint(showerror, err)
     end
 end
 
