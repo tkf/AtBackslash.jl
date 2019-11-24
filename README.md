@@ -71,7 +71,7 @@ julia> (x = 1, y = 2) |> @\(x = $:x, :y)
 (x = :x, y = 2)
 ```
 
-Use plain names to refer to the ones in the outer scope:
+Use plain names to refer to the variables in the outer scope:
 
 ```julia
 julia> let z = 3
