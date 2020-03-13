@@ -1,7 +1,7 @@
 name = "AtBackslash"
 uuid = "04ea9a2a-9613-4550-8ec7-b0cad5b6b706"
 authors = ["Takafumi Arakaki <aka.tkf@gmail.com>"]
-version = "0.1.0"
+version = "0.1.1-DEV"
 
 [compat]
 julia = "1"
